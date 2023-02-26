@@ -1,6 +1,9 @@
 export const makeCollectionPath = (collectionName, accessToken, itemId) =>
   `https://auction-1459b-default-rtdb.europe-west1.firebasedatabase.app/${collectionName}/${itemId}.json?auth=${accessToken}`;
 
+export const accessCollection = (collectionName, accessToken) =>
+  `https://auction-1459b-default-rtdb.europe-west1.firebasedatabase.app/${collectionName}.json?auth=${accessToken}`;
+
 export async function makeRequest(url = "", method, data = {}) {
   // Default options are marked with *
   const response = await fetch(url, {

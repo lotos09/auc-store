@@ -22,12 +22,6 @@ const AppRouter = () => {
       {user ? (
         <Routes>
           <Route path="/" element={<Navbar />}>
-            <Route
-              index
-              key={ROUTES.LOGIN}
-              path={ROUTES.LOGIN}
-              element={<LoginPage />}
-            />
             <Route key={ROUTES.MAIN_PAGE} element={<MainPage />} />
             <Route
               key={ROUTES.STORE}
@@ -48,7 +42,7 @@ const AppRouter = () => {
           </Route>
         </Routes>
       ) : (
-        <LoadingSpinner />
+        <LoginPage />
       )}
     </div>
   );

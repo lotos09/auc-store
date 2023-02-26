@@ -1,7 +1,11 @@
 import React, { useContext, useMemo, useState } from "react";
 import { Button, TextField } from "@mui/material";
 import { useFormik } from "formik";
-import { makeCollectionPath, makeRequest } from "../../api/general";
+import {
+  accessCollection,
+  makeCollectionPath,
+  makeRequest,
+} from "../../api/general";
 import { Context } from "../../App";
 
 const useStyles = (isSoldOut) => ({
@@ -26,6 +30,7 @@ const useStyles = (isSoldOut) => ({
     boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px",
     margin: "10px",
     borderRadius: "5px",
+    maxWidth: 300,
   },
   form: {
     display: "flex",
@@ -33,7 +38,9 @@ const useStyles = (isSoldOut) => ({
     justifyContent: "space-between",
     width: 600,
   },
-  leftLot: {},
+  leftLot: {
+    minWidth: 300,
+  },
   rightLot: {},
   buttons: {
     display: "flex",
@@ -43,7 +50,11 @@ const useStyles = (isSoldOut) => ({
     border: "1px solid black",
   },
   soldOutImg: {
-    position: "absolute",
+    color: "red",
+    fontSize: "1rem",
+    border: "5px red solid",
+    padding: 20,
+    marginTop: 20,
   },
 });
 
@@ -62,7 +73,6 @@ const LotItem = ({ lot }) => {
     initialValues: {
       bid: currentPrice,
     },
-    // onSubmit: () => onEditItem(lot.id),
   });
 
   const onBidClick = async () => {
@@ -87,18 +97,19 @@ const LotItem = ({ lot }) => {
         buyerEmail: user.email,
       }
     );
+    await makeRequest(
+      makeCollectionPath("purchases", token, `/${user.uid}`),
+      "PATCH",
+      {
+        [`${lot.id}`]: {
+          title: lot.title,
+        },
+      }
+    );
   };
 
   return (
     <div style={styles.previewContainer}>
-      {lot?.isSoldOut && (
-        <img
-          style={styles.soldOutImg}
-          // height="2000"
-          src="../../media/sold.png"
-          alt="lot image"
-        />
-      )}
       <div style={styles.leftLot}>
         <div>{lot.title}</div>
         <img
@@ -112,10 +123,14 @@ const LotItem = ({ lot }) => {
       <div style={styles.rightLot}>
         <div>current price: {currentPrice}</div>
         <div>buyout price: {lot.buyoutPrice}</div>
+        {lot?.isSoldOut && <div style={styles.soldOutImg}>Sold Out</div>}
       </div>
       <div style={styles.buttons}>
-        <Button onClick={onByOutClick}>Buyout</Button>
+        <Button disabled={lot?.isSoldOut} onClick={onByOutClick}>
+          Buyout
+        </Button>
         <TextField
+          disabled={lot?.isSoldOut}
           id="bid"
           label="bid amount"
           name="bid"
@@ -123,7 +138,9 @@ const LotItem = ({ lot }) => {
           value={lotItemForm.values.bid}
           type="number"
         />
-        <Button onClick={onBidClick}>Make bid</Button>
+        <Button disabled={lot?.isSoldOut} onClick={onBidClick}>
+          Make bid
+        </Button>
       </div>
 
       <div style={styles.divider}></div>

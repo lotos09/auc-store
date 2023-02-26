@@ -23,21 +23,18 @@ const LoginPage = () => {
   });
 
   const registerUser = async () => {
-    try {
-      const newUser = await createUserWithEmailAndPassword(
-        auth,
-        registerForm.values.registerEmail,
-        registerForm.values.registerPassword
-      );
-      await makeRequest(
-        makeCollectionPath(`usersStore`, user.accessToken, ""),
+    createUserWithEmailAndPassword(
+      auth,
+      registerForm.values.registerEmail,
+      registerForm.values.registerPassword
+    ).then((res) => {
+      console.log(res);
+      makeRequest(
+        makeCollectionPath(`usersStore`, res.user.accessToken, ""),
         "POST",
-        { ...registerForm.values, uid: newUser.user.uid }
+        { ...registerForm.values, uid: res.user.uid }
       );
-      console.log({ newUser, registerForm });
-    } catch (error) {
-      console.log(error.message);
-    }
+    });
   };
 
   const loginUser = async () => {
@@ -54,8 +51,6 @@ const LoginPage = () => {
       console.log(error.message);
     }
   };
-
-  console.log(loginForm.values);
 
   const registerFormRender = useCallback(() => {
     return (
