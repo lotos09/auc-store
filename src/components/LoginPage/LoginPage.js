@@ -82,7 +82,7 @@ const LoginPage = () => {
         </form>
       </div>
     );
-  }, []);
+  }, [registerForm]);
 
   const loginFormRender = useCallback(() => {
     return (
@@ -114,7 +114,7 @@ const LoginPage = () => {
         </form>
       </div>
     );
-  }, []);
+  }, [loginForm]);
 
   return (
     <>

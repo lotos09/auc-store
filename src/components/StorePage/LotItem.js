@@ -1,11 +1,7 @@
 import React, { useContext, useMemo, useState } from "react";
 import { Button, TextField } from "@mui/material";
 import { useFormik } from "formik";
-import {
-  accessCollection,
-  makeCollectionPath,
-  makeRequest,
-} from "../../api/general";
+import { makeCollectionPath, makeRequest } from "../../api/general";
 import { Context } from "../../App";
 
 const useStyles = (isSoldOut) => ({
@@ -59,7 +55,7 @@ const useStyles = (isSoldOut) => ({
 });
 
 const LotItem = ({ lot }) => {
-  const { user, sharedData } = useContext(Context);
+  const { user } = useContext(Context);
   const token = useMemo(() => user?.accessToken, [user]);
   const [currentPrice, setCurrentPrice] = useState(
     lot?.currentPrice || lot.startPrice
@@ -116,7 +112,7 @@ const LotItem = ({ lot }) => {
           style={styles.previewImg}
           height="200"
           src={preview}
-          alt="lot image"
+          alt="preview"
         />
         <div>{lot.description}</div>
       </div>

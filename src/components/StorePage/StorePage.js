@@ -1,10 +1,4 @@
-import React, {
-  useCallback,
-  useContext,
-  useEffect,
-  useMemo,
-  useState,
-} from "react";
+import React, { useContext, useEffect, useMemo, useState } from "react";
 import { makeCollectionPath } from "../../api/general";
 import { Context } from "../../App";
 import { Paper } from "@mui/material";
@@ -12,8 +6,7 @@ import LotsGrid from "./LotsGrid";
 import { paperStyle } from "../../constants/styles";
 
 const StorePage = () => {
-  const { user, sharedData } = useContext(Context);
-  const { searchValue } = sharedData;
+  const { user } = useContext(Context);
   const token = useMemo(() => user?.accessToken, [user]);
   const [lots, setLots] = useState([]);
 

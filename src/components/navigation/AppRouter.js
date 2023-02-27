@@ -10,8 +10,6 @@ import { Context } from "../../App";
 import StorePage from "../StorePage/StorePage";
 import AccountDetailsPage from "../AccountDetailsPage/AccountDetailsPage";
 import CartPage from "../CartPage/CartPage";
-import { Puff } from "react-loader-spinner";
-import LoadingSpinner from "../../utils/LoadingSpinner";
 
 const AppRouter = () => {
   const { auth } = useContext(Context);

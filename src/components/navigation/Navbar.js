@@ -12,7 +12,7 @@ import ListItemText from "@mui/material/ListItemText";
 import MenuIcon from "@mui/icons-material/Menu";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
-import { useCallback, useContext, useEffect } from "react";
+import { useCallback, useContext } from "react";
 import { Context } from "../../App";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { ROUTES } from "../../constants/router";
@@ -24,12 +24,10 @@ import {
   ListItemButton,
   TextField,
 } from "@mui/material";
-import { Link, Outlet, useLocation, useParams } from "react-router-dom";
+import { Link, Outlet, useLocation } from "react-router-dom";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import StorefrontIcon from "@mui/icons-material/Storefront";
-import SearchIcon from "@mui/icons-material/Search";
-import { useFormik } from "formik";
 
 const drawerWidth = 240;
 
@@ -41,7 +39,7 @@ export const Navbar = (props) => {
     setMobileOpen(!mobileOpen);
   };
 
-  const { auth, sharedData, setSharedData } = useContext(Context);
+  const { auth, setSharedData } = useContext(Context);
   const [user] = useAuthState(auth);
 
   const handleDrawerToggle = () => {
@@ -54,12 +52,15 @@ export const Navbar = (props) => {
 
   let { pathname } = useLocation();
 
-  const onSearchChange = useCallback(({ target }) => {
-    setSharedData((prev) => ({
-      ...prev,
-      searchValue: target.value,
-    }));
-  }, []);
+  const onSearchChange = useCallback(
+    ({ target }) => {
+      setSharedData((prev) => ({
+        ...prev,
+        searchValue: target.value,
+      }));
+    },
+    [setSharedData]
+  );
 
   const drawer = (
     <div>

@@ -1,6 +1,5 @@
-import React, { useContext } from "react";
+import React from "react";
 
-import { Button, TextField } from "@mui/material";
 import LotItem from "./LotItem";
 
 const LotsGrid = (lots) => {
