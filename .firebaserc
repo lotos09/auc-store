@@ -1,0 +1,15 @@
+{
+  "projects": {
+    "default": "auction-1459b"
+  },
+  "targets": {
+    "auction-1459b": {
+      "hosting": {
+        "store": [
+          "auc-store"
+        ]
+      }
+    }
+  },
+  "etags": {}
+}
