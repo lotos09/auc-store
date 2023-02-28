@@ -10,11 +10,6 @@ const StorePage = () => {
   const token = useMemo(() => user?.accessToken, [user]);
   const [lots, setLots] = useState([]);
 
-  const getLots = () =>
-    fetch(makeCollectionPath("lots", token, ""))
-      .then((response) => response.json())
-      .then((data) => setLots(Object.entries(data || [])));
-
   useEffect(() => {
     if (!token) {
       return;
