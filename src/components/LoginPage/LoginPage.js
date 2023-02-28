@@ -1,6 +1,5 @@
-import React, { useCallback, useContext, useMemo } from "react";
+import React, { useCallback, useContext } from "react";
 import { Context } from "../../App";
-import { getAuth } from "firebase/auth";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { makeCollectionPath, makeRequest } from "../../api/general";
 import { TextField } from "@mui/material";
@@ -10,7 +9,6 @@ import { createUserWithEmailAndPassword } from "firebase/auth";
 
 const LoginPage = () => {
   const { auth, setUsers } = useContext(Context);
-  const user = auth.currentUser;
 
   const loginForm = useFormik({
     initialValues: {},

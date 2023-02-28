@@ -1,16 +1,9 @@
-import React, {
-  useCallback,
-  useContext,
-  useEffect,
-  useMemo,
-  useState,
-} from "react";
-import { makeCollectionPath, makeRequest } from "../../api/general";
-import { Button } from "@mui/material";
+import React, { useContext, useEffect, useState } from "react";
+import { makeCollectionPath } from "../../api/general";
 import { Context } from "../../App";
 
 const CartPage = () => {
-  const { auth, setUsers } = useContext(Context);
+  const { auth } = useContext(Context);
   const user = auth.currentUser;
 
   const [purchases, setPurchases] = useState([]);
@@ -22,7 +15,7 @@ const CartPage = () => {
         const formattedData = Object.values(data);
         setPurchases(formattedData);
       });
-  }, []);
+  }, [user]);
 
   console.log(purchases);
 
