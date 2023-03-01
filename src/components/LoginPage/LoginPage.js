@@ -53,7 +53,7 @@ const LoginPage = () => {
   const registerFormRender = useCallback(() => {
     return (
       <div style={{ textAlign: "center", marginTop: "50px" }}>
-        <h2>Register user form</h2>
+        <h2>Register user form 123123</h2>
         <form onSubmit={registerForm.handleSubmit}>
           <TextField
             required
