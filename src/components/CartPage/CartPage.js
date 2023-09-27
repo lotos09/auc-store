@@ -21,6 +21,7 @@ const CartPage = () => {
 
   return (
     <div>
+      <div>Bids & Purchases Page</div>
       {purchases?.map((item) => (
         <div>{item.title}</div>
       ))}
