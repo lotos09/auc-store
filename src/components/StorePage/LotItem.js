@@ -1,8 +1,8 @@
 import React, { useContext, useMemo, useState } from "react";
-import { Button, TextField } from "@mui/material";
 import { useFormik } from "formik";
 import { makeCollectionPath, makeRequest } from "../../api/general";
 import { Context } from "../../App";
+import { textStyles } from "../shared/styles";
 
 const useStyles = (isSoldOut) => ({
   previewContainer: {
@@ -54,6 +54,64 @@ const useStyles = (isSoldOut) => ({
   },
 });
 
+const nikeStyles = () => ({
+  container: {
+    display: "flex",
+    flexDirection: "column",
+    width: "348px",
+    height: "533px",
+    margin: "30px 20px",
+    fontFamily: "Helvetica Neue",
+  },
+  imgContainer: {
+    position: "relative",
+    display: "flex",
+    justifyContent: "center",
+  },
+  img: {
+    width: "348px",
+    height: "348px",
+    objectFit: "cover",
+    objectPosition: "25% 25%",
+  },
+  bottomContainer: {
+    display: "flex",
+    flexDirection: "column",
+  },
+  soldOut: {
+    color: "red",
+    fontSize: 24,
+    fontWeight: 600,
+  },
+  titleContainer: {
+    display: "flex",
+    justifyContent: "space-between",
+  },
+  title: {
+    ...textStyles.orange,
+    margin: "8px 0",
+  },
+  description: {
+    ...textStyles.black,
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+  },
+  categoryTag: {
+    ...textStyles.gray,
+  },
+  priceSection: {
+    display: "flex",
+    justifyContent: "space-between",
+  },
+  current: {
+    ...textStyles.black,
+  },
+  buyout: {
+    ...textStyles.black,
+  },
+  form: {},
+});
+
 const LotItem = ({ lot }) => {
   const { user } = useContext(Context);
   const token = useMemo(() => user?.accessToken, [user]);
@@ -62,6 +120,7 @@ const LotItem = ({ lot }) => {
   );
 
   const styles = useStyles(lot?.isSoldOut);
+  const newStyles = nikeStyles();
 
   const preview = lot.images[0];
 
@@ -105,41 +164,62 @@ const LotItem = ({ lot }) => {
   };
 
   return (
-    <div style={styles.previewContainer}>
-      <div style={styles.leftLot}>
-        <div>{lot.title}</div>
-        <img
-          style={styles.previewImg}
-          height="200"
-          src={preview}
-          alt="preview"
-        />
-        <div>{lot.description}</div>
-      </div>
-      <div style={styles.rightLot}>
-        <div>current price: {currentPrice}</div>
-        <div>buyout price: {lot.buyoutPrice}</div>
-        {lot?.isSoldOut && <div style={styles.soldOutImg}>Sold Out</div>}
-      </div>
-      <div style={styles.buttons}>
-        <Button disabled={lot?.isSoldOut} onClick={onByOutClick}>
-          Buyout
-        </Button>
-        <TextField
-          disabled={lot?.isSoldOut}
-          id="bid"
-          label="bid amount"
-          name="bid"
-          onChange={lotItemForm.handleChange}
-          value={lotItemForm.values.bid}
-          type="number"
-        />
-        <Button disabled={lot?.isSoldOut} onClick={onBidClick}>
-          Make bid
-        </Button>
-      </div>
+    // <div style={styles.previewContainer}>
+    //   <div style={styles.leftLot}>
+    //     <div>{lot.title}</div>
+    //     <img
+    //       style={styles.previewImg}
+    //       height="200"
+    //       src={preview}
+    //       alt="preview"
+    //     />
+    //     <div>{lot.description}</div>
+    //   </div>
+    //   <div style={styles.rightLot}>
+    //     <div>current price: {currentPrice}</div>
+    //     <div>buyout price: {lot.buyoutPrice}</div>
+    //     {lot?.isSoldOut && <div style={styles.soldOutImg}>Sold Out</div>}
+    //   </div>
+    //   <div style={styles.buttons}>
+    //     <Button disabled={lot?.isSoldOut} onClick={onByOutClick}>
+    //       Buyout
+    //     </Button>
+    //     <TextField
+    //       disabled={lot?.isSoldOut}
+    //       id="bid"
+    //       label="bid amount"
+    //       name="bid"
+    //       onChange={lotItemForm.handleChange}
+    //       value={lotItemForm.values.bid}
+    //       type="number"
+    //     />
+    //     <Button disabled={lot?.isSoldOut} onClick={onBidClick}>
+    //       Make bid
+    //     </Button>
+    //   </div>
+    //
+    //   <div style={styles.divider}></div>
+    // </div>
 
-      <div style={styles.divider}></div>
+    <div style={newStyles.container}>
+      <img alt="iamge preview" style={newStyles.img} src={preview} />
+
+      <div style={newStyles.bottomContainer}>
+        <div style={newStyles.titleContainer}>
+          <div style={newStyles.title}>{lot.title}</div>
+          {/*<div style={newStyles.soldOut}>{lot?.isSoldOut && "SOLD OUT!"}</div>*/}
+        </div>
+
+        <div style={newStyles.description}>{lot.description}</div>
+        <div style={newStyles.categoryTag}>category tag</div>
+
+        <div style={newStyles.priceSection}>
+          <div style={newStyles.current}>current price: {currentPrice}</div>
+          <div style={newStyles.buyout}>buyout price: {lot.buyoutPrice}</div>
+        </div>
+
+        <div style={newStyles.form}></div>
+      </div>
     </div>
   );
 };
