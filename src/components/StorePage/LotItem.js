@@ -54,7 +54,7 @@ const useStyles = (isSoldOut) => ({
   },
 });
 
-const nikeStyles = () => ({
+const whiteThemeStyles = () => ({
   container: {
     display: "flex",
     flexDirection: "column",
@@ -62,6 +62,13 @@ const nikeStyles = () => ({
     height: "533px",
     margin: "30px 20px",
     fontFamily: "Helvetica Neue",
+  },
+  innerWrapper: {
+    display: "flex",
+    flexDirection: "column",
+    padding: 15,
+    maxWidth: "320px",
+    maxHeight: "500px",
   },
   imgContainer: {
     position: "relative",
@@ -112,25 +119,45 @@ const nikeStyles = () => ({
   form: {},
 });
 
+/**
+ * Component to render a lot item
+ * @param {Object} lot - The lot object to render
+ * @returns {ReactElement} - The rendered lot item component
+ */
 const LotItem = ({ lot }) => {
+  // Get the user from context
   const { user } = useContext(Context);
+
+  // Get the user's access token
   const token = useMemo(() => user?.accessToken, [user]);
+
+  // Set the initial current price of the lot
   const [currentPrice, setCurrentPrice] = useState(
     lot?.currentPrice || lot.startPrice
   );
 
+  // Get the styles for the lot item
   const styles = useStyles(lot?.isSoldOut);
-  const newStyles = nikeStyles();
 
+  // Get the new styles for the lot item
+  const newStyles = whiteThemeStyles();
+
+  // Get the preview image of the lot
   const preview = lot.images[0];
 
+  // Formik form for the lot item
   const lotItemForm = useFormik({
     initialValues: {
       bid: currentPrice,
     },
   });
 
+  /**
+   * Function to handle the bid click event
+   * @returns {Promise<void>} - A promise that resolves when the bid click event is handled
+   */
   const onBidClick = async () => {
+    // Make a request to update the current price of the lot
     const res = await makeRequest(
       makeCollectionPath("lots", token, `/${lot.id}`),
       "PATCH",
@@ -138,10 +165,17 @@ const LotItem = ({ lot }) => {
         currentPrice: lotItemForm.values.bid,
       }
     );
+
+    // Update the current price state with the response current price
     setCurrentPrice(res.currentPrice);
   };
 
+  /**
+   * Function to handle the buyout click event
+   * @returns {Promise<void>} - A promise that resolves when the buyout click event is handled
+   */
   const onByOutClick = async () => {
+    // Make a request to mark the lot as sold out and add the buyer information
     await makeRequest(
       makeCollectionPath("lots", token, `/${lot.id}`),
       "PATCH",
@@ -152,6 +186,8 @@ const LotItem = ({ lot }) => {
         buyerEmail: user.email,
       }
     );
+
+    // Make a request to update the purchases collection with the purchased lot
     await makeRequest(
       makeCollectionPath("purchases", token, `/${user.uid}`),
       "PATCH",
@@ -164,43 +200,6 @@ const LotItem = ({ lot }) => {
   };
 
   return (
-    // <div style={styles.previewContainer}>
-    //   <div style={styles.leftLot}>
-    //     <div>{lot.title}</div>
-    //     <img
-    //       style={styles.previewImg}
-    //       height="200"
-    //       src={preview}
-    //       alt="preview"
-    //     />
-    //     <div>{lot.description}</div>
-    //   </div>
-    //   <div style={styles.rightLot}>
-    //     <div>current price: {currentPrice}</div>
-    //     <div>buyout price: {lot.buyoutPrice}</div>
-    //     {lot?.isSoldOut && <div style={styles.soldOutImg}>Sold Out</div>}
-    //   </div>
-    //   <div style={styles.buttons}>
-    //     <Button disabled={lot?.isSoldOut} onClick={onByOutClick}>
-    //       Buyout
-    //     </Button>
-    //     <TextField
-    //       disabled={lot?.isSoldOut}
-    //       id="bid"
-    //       label="bid amount"
-    //       name="bid"
-    //       onChange={lotItemForm.handleChange}
-    //       value={lotItemForm.values.bid}
-    //       type="number"
-    //     />
-    //     <Button disabled={lot?.isSoldOut} onClick={onBidClick}>
-    //       Make bid
-    //     </Button>
-    //   </div>
-    //
-    //   <div style={styles.divider}></div>
-    // </div>
-
     <div style={newStyles.container}>
       <img alt="iamge preview" style={newStyles.img} src={preview} />
 
